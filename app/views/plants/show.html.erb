@@ -1,0 +1,5 @@
+<h1><%= @plant.name %></h1>
+<p>Species: <%= @plant.species %></p>
+<p>Location: <%= @plant.location %></p>
+<p>Watering every <%= @plant.watering_frequency %> days</p>
+<p>Last watered: <%= @plant.last_watered_at.strftime("%b %d, %Y") %></p>

@@ -1,0 +1,11 @@
+<h1>My Plants</h1>
+<ul>
+  <% @plants.each do |plant| %>
+    <li>
+      <%= plant.name %> - <%= plant.species %>
+      <%= link_to "View", plant_path(plant) %>
+      <%= link_to "Edit", edit_plant_path(plant) %>
+    </li>
+  <% end %>
+</ul>
+<%= link_to "Add New Plant", new_plant_path %>

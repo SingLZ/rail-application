@@ -1,0 +1,8 @@
+<h1>New Plant</h1>
+<%= form_with model: @plant do |f| %>
+  <p>Name: <%= f.text_field :name %></p>
+  <p>Species: <%= f.text_field :species %></p>
+  <p>Location: <%= f.text_field :location %></p>
+  <p>Watering Frequency: <%= f.number_field :watering_frequency %></p>
+  <%= f.submit "Create Plant" %>
+<% end %>
