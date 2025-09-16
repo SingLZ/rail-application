@@ -46,7 +46,9 @@ gem 'bcrypt', '~> 3.1.7'
 group :development, :test do
   gem 'rspec-rails', '~> 8.0.0'
   gem 'faker', '~> 3.0'
-
+  gem "debug"                     # Debugging
+  gem "brakeman", require: false   # Security scanning
+  gem "rubocop-rails-omakase", require: false # Style consistency
 end
 
 group :development do
