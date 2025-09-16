@@ -3,6 +3,7 @@
   <% @plants.each do |plant| %>
     <li>
       <%= plant.name %> - <%= plant.species %>
+      (added by: <%= plant.user.full_name %>)
       <%= link_to "View", plant_path(plant) %>
       <%= link_to "Edit", edit_plant_path(plant) %>
     </li>
