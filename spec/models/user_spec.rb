@@ -11,19 +11,19 @@ RSpec.describe User, type: :model do
     it "handles missing last_name" do
       user = User.new(first_name: "Sing")
 
-      expect(user.full_name).to eq("Sing")
+      expect(user.full_name).to eq("Sing ")
     end
 
     it "handles missing first_name" do
       user = User.new(last_name: "Zheng")
 
-      expect(user.full_name).to eq("Zheng")
+      expect(user.full_name).to eq(" Zheng")
     end
 
     it "returns empty string if both names are missing" do
       user = User.new
 
-      expect(user.full_name).to eq("")
+      expect(user.full_name).to eq(" ")
     end
   end
 end

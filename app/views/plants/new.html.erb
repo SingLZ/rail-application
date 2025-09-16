@@ -1,8 +1,26 @@
 <h1>New Plant</h1>
-<%= form_with model: @plant do |f| %>
-  <p>Name: <%= f.text_field :name %></p>
-  <p>Species: <%= f.text_field :species %></p>
-  <p>Location: <%= f.text_field :location %></p>
-  <p>Watering Frequency: <%= f.number_field :watering_frequency %></p>
-  <%= f.submit "Create Plant" %>
+
+<%= form_with model: @plant do |form| %>
+  <%= form.label :name %>
+  <%= form.text_field :name %>
+
+  <%= form.label :species %>
+  <%= form.text_field :species %>
+
+  <%= form.label :location %>
+  <%= form.text_field :location %>
+
+  <%= form.label :watering_frequency %>
+  <%= form.text_field :watering_frequency %>
+
+  <%= form.label :last_watered_at %>
+  <%= form.date_field :last_watered_at %>
+
+  <%= form.label :user_email, "Your Email" %>
+  <%= form.email_field :user_email, placeholder: "Enter your email" %>
+
+  <%= form.label :user_name, "Your Name" %>
+  <%= form.text_field :user_name, placeholder: "Enter your name" %>
+
+  <%= form.submit "Create Plant" %>
 <% end %>

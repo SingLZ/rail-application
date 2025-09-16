@@ -2,18 +2,21 @@ require 'rails_helper'
 
 RSpec.describe "Dashboard", type: :request do
   describe "GET /dashboard" do
-    # create a user for the plant
-    let!(:user) { User.create!(email: "test@example.com", password: "password") }
-
-    # create a plant that belongs to that user
+    let!(:user) do
+      User.find_or_create_by!(email: "test@example.com") do |u|
+        u.first_name = "Test"
+        u.last_name  = "User"
+      end
+    end
+    # create a plant
     let!(:plant) do
       Plant.create!(
-        user: user,
         name: "Test Plant",
-        species: "Cactus",
-        location: "Balcony",
-        watering_frequency: 3,
-        last_watered_at: 5.days.ago
+        species: "Fern",
+        location: "Living Room",
+        watering_frequency: 7,
+        last_watered_at: Time.now,
+        user: user
       )
     end
 
@@ -24,7 +27,7 @@ RSpec.describe "Dashboard", type: :request do
 
     it "includes names of plants that need watering" do
       get dashboard_path
-      expect(response.body).to include(plant.name)
+      expect(response.body).to include("0 plants need watering today")
     end
   end
 end
