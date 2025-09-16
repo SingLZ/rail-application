@@ -1,0 +1,13 @@
+<h1>Welcome to Your Plant Tracker</h1>
+
+<p>You have <%= @total_plants %> plants in your collection.</p>
+<p><%= @needs_watering.count %> plants need watering today.</p>
+
+<ul>
+  <% @needs_watering.each do |plant| %>
+    <li><%= plant.name %> (last watered: <%= plant.last_watered_at %>)</li>
+  <% end %>
+</ul>
+
+<%= link_to "View All Plants", plants_path %>
+<%= link_to "Add New Plant", new_plant_path %>
