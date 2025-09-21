@@ -31,4 +31,3 @@ RSpec.describe "Dashboard", type: :request do
     end
   end
 end
-

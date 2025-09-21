@@ -1,5 +1,5 @@
 class PlantsController < ApplicationController
-  before_action :set_plant, only: [:show, :edit, :update]
+  before_action :set_plant, only: [ :show, :edit, :update ]
 
   # GET /plants
   def index
@@ -23,7 +23,7 @@ class PlantsController < ApplicationController
     # Split the entered full name into first and last
     full_name = params[:plant][:user_name].to_s.strip
     first_name = full_name.split.first
-    last_name = full_name.split.drop(1).join(' ')
+    last_name = full_name.split.drop(1).join(" ")
 
     # Find existing user by email or create a new one
     user = User.find_or_create_by(email: params[:plant][:user_email]) do |u|
@@ -32,7 +32,7 @@ class PlantsController < ApplicationController
     end
 
     # Assign the plant to that user
-    @plant = user.plants.new(plant_params.except(:user_email, :user_name))
+    @plant = user.plants.new(plant_params)
 
     if @plant.save
       redirect_to plants_path, notice: "Plant was successfully created."
@@ -60,6 +60,6 @@ class PlantsController < ApplicationController
   end
 
   def plant_params
-    params.require(:plant).permit(:name, :species, :location, :watering_frequency, :last_watered_at, :user_id)
+    params.require(:plant).permit(:name, :species, :location, :watering_frequency, :last_watered_at)
   end
 end
