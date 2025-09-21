@@ -40,13 +40,16 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-gem 'bcrypt', '~> 3.1.7'
+gem "bcrypt", "~> 3.1.7"
 
 
 group :development, :test do
-  gem 'rspec-rails', '~> 8.0.0'
-  gem 'faker', '~> 3.0'
-
+  gem "rspec-rails", "~> 8.0.0"
+  gem "faker", "~> 3.0"
+  gem "devise"
+  gem "debug"                    # Debugging
+  gem "brakeman", require: false   # Security scanning
+  gem "rubocop-rails-omakase", require: false # Style consistency
 end
 
 group :development do
