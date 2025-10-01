@@ -1,11 +1,11 @@
 class DashboardController < ApplicationController
+  before_action :authenticate_user!
   def index
-    # For now, just grab all plants (later you might scope to current_user)
-    @plants = Plant.all
+
+   @plants = current_user.plants
 
     @total_plants = @plants.count
 
-    # "Needs watering" if last_watered_at is too far in the past
     today = Date.today
     @needs_watering = @plants.select do |plant|
       next false if plant.last_watered_at.nil? || plant.watering_frequency.nil?

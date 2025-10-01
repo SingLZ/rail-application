@@ -1,21 +1,46 @@
+# app/controllers/plants_controller.rb
 class PlantsController < ApplicationController
-  # GET /plants
+  # Keep reads public; protect mutating routes only
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+
   def index
-    @plants = Plant.all
+    plants = Plant.all
+    render json: plants, status: :ok
   end
 
-  # GET /plants/:id
   def show
-    @plant = Plant.find(params[:id])
+    plant = Plant.find(params[:id])
+    render json: plant, status: :ok
   end
 
-  # GET /plants/new
+  def create
+    plant = current_user.plants.create!(plant_params)
+    render json: plant, status: :created
+  end
+
+  def update
+    plant = current_user.plants.find(params[:id])
+    plant.update!(plant_params)
+    render json: plant, status: :ok
+  end
+
   def new
-    @plant = Plant.new
+    @plant = current_user.plants.new
   end
 
-  # GET /plants/:id/edit
   def edit
-    @plant = Plant.find(params[:id])
+    @plant = current_user.plants.find(params[:id])
+  end
+
+  def destroy
+    plant = current_user.plants.find(params[:id])
+    plant.destroy!
+    head :no_content
+  end
+
+  private
+
+  def plant_params
+    params.require(:plant).permit(:name, :species, :location, :watering_frequency, :last_watered_at)
   end
 end
