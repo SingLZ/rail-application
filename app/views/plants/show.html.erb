@@ -1,5 +1,18 @@
-<h1><%= @plant.name %></h1>
-<p>Species: <%= @plant.species %></p>
-<p>Location: <%= @plant.location %></p>
-<p>Watering every <%= @plant.watering_frequency %> days</p>
-<p>Last watered: <%= @plant.last_watered_at.strftime("%b %d, %Y") %></p>
+<div class="plant-show-container">
+  <h1 class="plant-name">🌿 <%= @plant.name %></h1>
+
+  <div class="plant-details">
+    <p><strong>Species:</strong> <%= @plant.species %></p>
+    <p><strong>Location:</strong> <%= @plant.location %></p>
+    <p><strong>Watering Frequency:</strong> Every <%= @plant.watering_frequency %> days</p>
+    <p><strong>Last Watered:</strong> 
+      <%= @plant.last_watered_at.present? ? @plant.last_watered_at.strftime("%b %d, %Y") : "Not recorded" %>
+    </p>
+  </div>
+
+  <div class="plant-actions">
+    <%= link_to "✏️ Edit Plant", edit_plant_path(@plant), class: "btn btn-primary" %>
+    <%= link_to "🌱 My Plants", plants_path, class: "btn btn-secondary" %>
+    <%= link_to "🏠 Dashboard", dashboard_path, class: "btn btn-secondary" %>
+  </div>
+</div>

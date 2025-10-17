@@ -20,8 +20,8 @@ user = User.first || User.create!(email: "test@example.com", password: "password
   Plant.create!(
     user: user,
     name: Faker::Creature::Animal.name,
-    species: ["Succulent", "Fern", "Orchid", "Cactus"].sample,
-    location: ["Living Room", "Kitchen", "Balcony"].sample,
+    species: [ "Succulent", "Fern", "Orchid", "Cactus" ].sample,
+    location: [ "Living Room", "Kitchen", "Balcony" ].sample,
     watering_frequency: rand(3..14),
     last_watered_at: rand(0..10).days.ago
   )

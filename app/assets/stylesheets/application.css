@@ -8,3 +8,116 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+/* Dashboard Page */
+.dashboard-container {
+  max-width: 700px;
+  margin: 80px auto;
+  padding: 2rem;
+  background: #f8fdf9;
+  border: 1px solid #dce5dc;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+  text-align: center;
+}
+
+.dashboard-title {
+  color: #2f4f2f;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-summary {
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e4ede4;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  line-height: 1.6;
+}
+
+.dashboard-summary p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.watering-list {
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+.watering-list h2 {
+  color: #3a7d44;
+  margin-bottom: 0.6rem;
+}
+
+.watering-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.watering-list li {
+  background: #ffffff;
+  border: 1px solid #dce5dc;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.empty-state {
+  font-size: 1.1rem;
+  color: #555;
+  margin: 1.5rem 0;
+}
+
+.dashboard-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.logout-section {
+  margin-top: 2rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #3a7d44;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2f6637;
+}
+
+.btn-secondary {
+  background-color: #66a366;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #558f57;
+}
+
+.btn-logout {
+  background-color: #d9534f;
+  color: white;
+}
+
+.btn-logout:hover {
+  background-color: #c9302c;
+}
