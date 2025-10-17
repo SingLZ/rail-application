@@ -7,13 +7,16 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = User.new(user_params)
-    if user.save
-      render json: { id: user.id, email: user.email }, status: :created
-    else
-      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
-    end
+  @user = User.new(user_params)
+  if User.exists?(email: @user.email)
+    redirect_to new_session_path, alert: "Email already registered. Please log in."
+  elsif @user.save
+    redirect_to new_session_path, notice: "Account created. Please log in."
+  else
+    render :new, status: :unprocessable_content
   end
+end
+
 
   private
 

@@ -1,26 +1,35 @@
-<h1>New Plant</h1>
+<div class="plant-form-container">
+  <h1 class="form-title">🌱 Add a New Plant</h1>
 
-<%= form_with model: @plant do |form| %>
-  <%= form.label :name %>
-  <%= form.text_field :name %>
+  <%= form_with model: @plant, local: true, class: "plant-form" do |form| %>
+    <div class="form-group">
+      <%= form.label :name, class: "form-label" %>
+      <%= form.text_field :name, required: true, class: "form-input" %>
+    </div>
 
-  <%= form.label :species %>
-  <%= form.text_field :species %>
+    <div class="form-group">
+      <%= form.label :species, class: "form-label" %>
+      <%= form.text_field :species, required: true, class: "form-input" %>
+    </div>
 
-  <%= form.label :location %>
-  <%= form.text_field :location %>
+    <div class="form-group">
+      <%= form.label :location, class: "form-label" %>
+      <%= form.text_field :location, required: true, class: "form-input" %>
+    </div>
 
-  <%= form.label :watering_frequency %>
-  <%= form.text_field :watering_frequency %>
+    <div class="form-group">
+      <%= form.label :watering_frequency, "Watering Frequency (days)", class: "form-label" %>
+      <%= form.number_field :watering_frequency, required: true, class: "form-input" %>
+    </div>
 
-  <%= form.label :last_watered_at %>
-  <%= form.date_field :last_watered_at %>
+    <div class="form-group">
+      <%= form.label :last_watered_at, "Last Watered On", class: "form-label" %>
+      <%= form.date_field :last_watered_at, class: "form-input" %>
+    </div>
 
-  <%= form.label :user_email, "Your Email" %>
-  <%= form.email_field :user_email, placeholder: "Enter your email" %>
-
-  <%= form.label :user_name, "Your Name" %>
-  <%= form.text_field :user_name, placeholder: "Enter your name" %>
-
-  <%= form.submit "Create Plant" %>
-<% end %>
+    <div class="form-actions">
+      <%= form.submit "Create Plant", class: "btn btn-primary" %>
+      <%= link_to "Cancel", plants_path, class: "btn btn-cancel" %>
+    </div>
+  <% end %>
+</div>

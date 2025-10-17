@@ -1,13 +1,37 @@
-<h1>Welcome to Your Plant Tracker</h1>
+<div class="dashboard-container">
+  <h1 class="dashboard-title">🌿 Welcome to Your Plant Tracker</h1>
 
-<p>You have <%= @total_plants %> plants in your collection.</p>
-<p><%= @needs_watering.count %> plants need watering today.</p>
+  <div class="dashboard-summary">
+    <p><strong>Total Plants:</strong> <%= @total_plants %></p>
+    <p><strong>Needs Watering Today:</strong> <%= @needs_watering.count %></p>
+  </div>
 
-<ul>
-  <% @needs_watering.each do |plant| %>
-    <li><%= plant.name %> (last watered: <%= plant.last_watered_at %>)</li>
+  <% if @needs_watering.any? %>
+    <div class="watering-list">
+      <h2>💧 Plants That Need Watering</h2>
+      <ul>
+        <% @needs_watering.each do |plant| %>
+          <li>
+            <strong><%= plant.name %></strong>
+            <span>(last watered: 
+              <%= plant.last_watered_at.present? ? plant.last_watered_at.strftime("%b %d, %Y") : "Not recorded" %>)
+            </span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% else %>
+    <p class="empty-state">All your plants are happy and hydrated 🌱</p>
   <% end %>
-</ul>
 
-<%= link_to "View All Plants", plants_path %>
-<%= link_to "Add New Plant", new_plant_path %>
+  <div class="dashboard-actions">
+    <%= link_to "🌱 View All Plants", plants_path, class: "btn btn-primary" %>
+    <%= link_to "➕ Add New Plant", new_plant_path, class: "btn btn-secondary" %>
+  </div>
+
+  <div class="logout-section">
+    <%= button_to "🚪 Logout", session_path, method: :delete,
+          data: { turbo_confirm: "Are you sure you want to log out?" },
+          class: "btn btn-logout" %>
+  </div>
+</div>

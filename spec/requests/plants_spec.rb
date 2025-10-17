@@ -2,9 +2,11 @@ require 'rails_helper'
 
 RSpec.describe "Plants", type: :request do
   def sign_in!(email:, password:)
-    post "/session", params: { email:, password: }
-    expect([200, 204, 302]).to include(response.status)
-  end
+  post "/session", params: { email:, password: }
+  expect([200, 204, 302, 303]).to include(response.status)
+  follow_redirect! if response.redirect?
+end
+
 
   let!(:user) do
   u = User.find_or_initialize_by(email: "test@example.com")
@@ -52,29 +54,33 @@ end
   end
 
   describe "GET /plants/new" do
-    context "when unauthenticated" do
-      it "blocks access" do
-        get new_plant_path
-        expect(response).to have_http_status(:forbidden).or have_http_status(:not_found)
-      end
-    end
-
-    context "when authenticated" do
-      before { sign_in!(email: user.email, password: "password123") }
-
-      it "returns a successful response" do
-        get new_plant_path
-        expect(response).to have_http_status(:ok)
-      end
+  context "when unauthenticated" do
+    it "redirects to login" do
+      get new_plant_path
+      expect(response).to have_http_status(:found).or have_http_status(:see_other)
+      follow_redirect!
+      expect(request.path).to eq(new_session_path)
     end
   end
 
-  describe "GET /plants/:id/edit" do
-    context "when unauthenticated" do
-      it "blocks access" do
-        get edit_plant_path(plant)
-        expect(response).to have_http_status(:forbidden)
-      end
+  context "when authenticated" do
+    before { sign_in!(email: user.email, password: "password123") }
+
+    it "returns a successful response" do
+      get new_plant_path
+      expect(response).to have_http_status(:ok)
     end
   end
+end
+
+describe "GET /plants/:id/edit" do
+  context "when unauthenticated" do
+    it "redirects to login" do
+      get edit_plant_path(plant)
+      expect(response).to have_http_status(:found).or have_http_status(:see_other)
+      follow_redirect!
+      expect(request.path).to eq(new_session_path)
+    end
+  end
+end
 end

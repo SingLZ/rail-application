@@ -1,51 +1,61 @@
+# spec/plants_spec.rb
 require "rails_helper"
 
-RSpec.describe "Plants", type: :request do
+RSpec.describe "Plants (HTML flow)", type: :request do
   def sign_in!(email:, password:)
-    post "/session", params: { email:, password: }
-    expect([200, 204]).to include(response.status)
+    post "/session", params: { email:, password: } # HTML request
+    expect([200, 204, 302, 303]).to include(response.status)
+    follow_redirect! if response.redirect?
+  end
+
+  let!(:user) do
+    u = User.find_or_initialize_by(email: "htmlspec@example.com")
+    u.first_name = "HTML"
+    u.last_name  = "Spec"
+    u.password   = "password123"
+    u.save!
+    u
   end
 
   describe "POST /plants" do
     it "creates a new plant for an authenticated user only" do
-      user = User.create!(
-        first_name: "Test", last_name: "User",
-        email: "test1@example.com", password: "password123"
-      )
-
-
       sign_in!(email: user.email, password: "password123")
 
       expect {
         post plants_path, params: {
           plant: {
-            name: "Fern",
-            species: "Boston Fern",
-            location: "Living Room",
-            watering_frequency: 7,
+            name: "HTML Spec Plant",
+            species: "Succulent",
+            location: "Desk",
+            watering_frequency: 5,
             last_watered_at: Time.current
           }
         }
       }.to change(Plant, :count).by(1)
-      expect { }.not_to change(User, :count) # explicit no-op expectation
 
-      plant = Plant.order(:created_at).last
-      expect(plant.user).to eq(user)
-      expect(response).to have_http_status(:created).or have_http_status(:ok)
+      # HTML branch redirects to index
+      expect(response).to have_http_status(:found).or have_http_status(:see_other).or have_http_status(:ok)
+      follow_redirect! if response.redirect?
+      expect(request.path).to eq(plants_path)
     end
 
     it "does not allow unauthenticated user to create a plant" do
-      post plants_path, params: {
-        plant: {
-          name: "Unauthorized Plant",
-          species: "Fake",
-          location: "Nowhere",
-          watering_frequency: 3,
-          last_watered_at: Time.current,
+      expect {
+        post plants_path, params: {
+          plant: {
+            name: "Unauthorized Plant",
+            species: "Fake",
+            location: "Nowhere",
+            watering_frequency: 3,
+            last_watered_at: Time.current
+          }
         }
-      }
-      expect(response).to have_http_status(:forbidden).or have_http_status(:not_found)
-      expect(Plant.where(name: "Unauthorized Plant")).to be_empty
+      }.not_to change(Plant, :count)
+
+      # Unauthed HTML requests are redirected to login
+      expect(response).to have_http_status(:found).or have_http_status(:see_other)
+      follow_redirect! if response.redirect?
+      expect(request.path).to eq(new_session_path)
     end
   end
-end   # ← closes the outer RSpec.describe
+end

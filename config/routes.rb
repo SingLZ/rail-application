@@ -17,4 +17,5 @@ Rails.application.routes.draw do
 
   resources :plants
   get "/dashboard", to: "dashboard#index", as: :dashboard
+  root "sessions#new"
 end

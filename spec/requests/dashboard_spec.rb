@@ -4,7 +4,9 @@ require 'rails_helper'
 RSpec.describe "Dashboard", type: :request do
   def sign_in!(email:, password:)
     post "/session", params: { email:, password: }
-    expect([200, 204, 302]).to include(response.status)
+    # HTML flow redirects after login; allow 302/303 too
+    expect([200, 204, 302, 303]).to include(response.status)
+    follow_redirect! if response.redirect?
   end
 
   describe "GET /dashboard" do
@@ -12,7 +14,7 @@ RSpec.describe "Dashboard", type: :request do
       user = User.find_or_initialize_by(email: "test@example.com")
       user.first_name = "Test"
       user.last_name  = "User"
-      user.password   = "password123"   # ensure password_digest exists
+      user.password   = "password123"
       user.save!
       user
     end
@@ -29,9 +31,12 @@ RSpec.describe "Dashboard", type: :request do
     end
 
     context "when unauthenticated" do
-      it "blocks access" do
+      it "redirects to login" do
         get dashboard_path
-        expect(response).to have_http_status(:forbidden).or have_http_status(:not_found)
+        expect(response).to have_http_status(:found).or have_http_status(:see_other)
+        # Optional: assert it lands on the login page
+        follow_redirect!
+        expect(request.path).to eq(new_session_path)
       end
     end
 
@@ -44,9 +49,12 @@ RSpec.describe "Dashboard", type: :request do
       end
 
       it "includes names/count of plants that need watering" do
-        get dashboard_path
-        expect(response.body).to include("0 plants need watering today")
-      end
+  get dashboard_path
+  doc = Nokogiri::HTML(response.body)
+  text = doc.at_css('.dashboard-summary')&.text&.squish
+  expect(text).to include("Needs Watering Today: 0")
+end
+
     end
   end
 end
